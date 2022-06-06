@@ -59,7 +59,7 @@ Ideally, this will be ~/.emacs.d.")
       (url-retrieve-synchronously
        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
     (let ((el-get-git-install-url "https://github.com/vedang/el-get.git")
-          (el-get-install-branch "rcp/add-update-rcps")
+          (el-get-install-branch "rcp/otee/add-update-rcps")
           el-get-install-skip-emacswiki-recipes)
       (goto-char (point-max))
       (eval-print-last-sexp))))
@@ -434,3 +434,27 @@ types to search in. Uses `projectile'."
 (server-start)
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(compat)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+
+
+;; Global key bindings
+(global-set-key (kbd "M-o") 'other-window)
+
+;; Font settings
+(set-face-attribute 'default nil :height 160)
+
+(when (not (eq system-type 'windows-nt))
+  (when (member "Fantasque Sans Mono" (font-family-list))
+    (set-frame-font "Fantasque Sans Mono")))
