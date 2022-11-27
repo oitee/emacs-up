@@ -104,7 +104,6 @@ Also contains along with versions and other config.")
                               (global-set-key (kbd "M-g g") 'avy-goto-line)
                               (global-set-key (kbd "M-g SPC") 'avy-goto-word-1)
                               (avy-setup-default)))
-
          ;; Fixing weird quirks and poor defaults
          (:name better-defaults)
          (:name plantuml-mode
@@ -269,6 +268,12 @@ types to search in. Uses `projectile'."
                                                                    (format " Ptl[%s]"
                                                                            (projectile-project-name)))))
                               (helm-projectile-on)))
+         (:name helm-ag
+                :after (progn (global-set-key (kbd "C-x c g a") 'helm-do-ag-project-root)
+                              (global-set-key (kbd "C-x c g s") 'helm-do-ag)))
+
+         (:name which-key
+                :after (progn (which-key-mode t)))
 
          ;; Use ido (nearly) everywhere
          ;; settings for this package are loaded below in the ido section.
