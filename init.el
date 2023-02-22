@@ -444,7 +444,9 @@ types to search in. Uses `projectile'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(compat)))
+ '(package-selected-packages
+   '(snapshot-timemachine git-wip-timemachine git-timemachine compat))
+ '(warning-suppress-types '((el-get))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -452,10 +454,65 @@ types to search in. Uses `projectile'."
  ;; If there is more than one, they won't work right.
  )
 
-
-
 ;; Global key bindings
 (global-set-key (kbd "M-o") 'other-window)
+;;-----------------------------------------------------------------------
+;; Taken from this repo: https://twirl.otee.dev/l/InAbh
+;; Note: the org-directory is fixed. May need to keep this in mind
+;; while cloning this repo.
+;; Also, This function answers the Q: "Where are my Org files
+;; typically located? [AND] Org acutally uses this variable only under
+;; rare circumstances,"
+
+(setq org-directory "~/Documents/org_files")
+
+(when (not (boundp 'org-directory))
+  (error "The variable `org-directory' is unset.  Please refer to instructions in the README"))
+
+(message "`org-directory' has been set to: %s" org-directory)
+
+(require 'org-agenda)
+
+;; Setup directory and file paths for org
+(defvar org-archive-directory (concat org-directory "/archive")
+  "Directory under which all archived content is stored.")
+
+(setq org-archive-location (concat org-archive-directory "/%s_archive::")
+      org-default-notes-file (concat org-directory "/daily.org")
+      org-agenda-files (list org-directory))
+
+;-------------------------------------------------------
+
+;; To ensure text is indented correctly in org-mode:
+;; https://twirl.otee.dev/l/0y4bb https://twirl.otee.dev/l/66Ebc
+(setq org-startup-indented t)
+
+;; For org-egenda. Key binding suggested by this udemy course:
+;; https://twirl.otee.dev/l/UKIbd
+(global-set-key (kbd "\C-ca") 'org-agenda)
+;; Taking a shorter (but alt) kbd from: https://twirl.otee.dev/l/InAbh
+(global-set-key (kbd "<f12>") 'org-agenda)
+
+;; Adding todo tags for org-mode. Comamnd is taken from: https://twirl.otee.dev/l/Db0be
+;; Tags are taken from Udemy Course: https://twirl.otee.dev/l/UKIbd
+(setq org-todo-keywords
+      '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)" "WAITING(w)" "VERIFY(v)" "BACKLOG(b)" "|" "DONE(d)" "CANCELLED(c)" "DELEGATED(g)")))
+
+;; Adding custom tags for org-mode. Taken from: https://twirl.otee.dev/l/I8bg
+;; Added my own tags.
+(setq org-tag-alist '((:startgroup . nil)
+                      ("ONGOING_PROJ" . ?o)
+                      ("BACKLOG" . ?b)
+                      ("RECURRING" . ?r)
+                      (:endgroup . nil)
+                      ("READ" . ?l)
+                      ("STRETCH" . ?s)
+                      ("MISC" . ?m)))
+
+;; For quick notes to be logged into `LOGBOOK` drawer
+(setq org-log-into-drawer 'LOGBOOK)
+
+;;(setq org-archive-location '"/%s_archive::")
 
 ;; Font settings
 (set-face-attribute 'default nil :height 160)
